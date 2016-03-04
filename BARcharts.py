@@ -3,8 +3,17 @@
 #Author: Nathaniel Pankhurst
 #Date: 04/03/2016
 
+#All use of threading was done with the help of: http://www.tutorialspoint.com/python/python_multithreading.htm
 import threading
 
+class searchThread(threading.Thread):
+    def _init_(self, threadID, searchName):
+        threading.Thread._init_(self)
+        self.threadID = threadID
+        self.searchName = searchName
+    def run(self):
+        print(self.searchName)
+    
 def getUserChoice():
     inputValid = False
     while not inputValid:
@@ -14,7 +23,7 @@ def getUserChoice():
         else:
             inputValid = False
             print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nError: user input invalid, please try again.\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
-            input("")
+            input("*Press Enter to continue*")
     return userChoice
 
 def getTree(tree):
@@ -31,7 +40,7 @@ def getTree(tree):
                 numberValid = True
              except ValueError:
                 print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nError: user input invalid, please try again.\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
-                input("")
+                input("*Press Enter to continue*")
                 numberValid = False
         while not nameValid:
             employeeName = input("What is the name of employee " + str(repetitionCount) + "?: ")
@@ -39,7 +48,7 @@ def getTree(tree):
                 nameValid = True
             else:
                 print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nError: user input invalid, please try again.\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
-                input("")
+                input("*Press Enter to continue*")
                 nameValid = False
         while not managerValid:
             try:
@@ -48,7 +57,7 @@ def getTree(tree):
                 managerValid = True
             except ValueError:
                 print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nError: user input invalid, please try again.\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
-                input("")
+                input("*Press Enter to continue*")
                 managerValid = False
                 
         tree.append((employeeNumber, employeeName, employeeManager))
@@ -72,35 +81,42 @@ def checkFinished():
             repeat = True
         else:
             print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nError: user input invalid, please try again.\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
-            input("")
+            input("*Press Enter to continue*")
     return repeat
 
-def getName(nameType):
+def getName(nameType, tree):
     nameValid = False
-    while not nameValid:, tree
+    nameFound = False
+    while not nameValid:
         name = input("Input the name for the person at the " + nameType + " of the chain: ")
-        for i in len(tree):
-            if name == tree[i][2]:
-                print(name)
-            else:
-                print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nError: This name isn't present in the Organisational chart, please enter another name.\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                input("")
+        i = 0
+        for i in range(len(tree)):
+            if name == tree[i][1]:
+                nameValid = True
+                nameFound = True
+                print("Employee " + name + " found.")
+            elif not nameFound:
+                if i == (len(tree) - 1):
+                    nameValid = False
+                    print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nError: This name isn't present in the Organisational chart, please enter another name.\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                    input("*Press Enter to continue*")
     return name
 
 def traverseTree():
+    #Tree defined  for testing purposes only
     tree = [(1, "Mr Big", 0), (2, "Alan Amis", 1), (3, "Bob Bridger", 1), (6, "Charlie Chubb", 2), (12, "Dave Dell", 3), (15, "Ernie East", 3), (16, "Fred Fish", 6), (17, "George Green", 6)]
     fromStartQueue = []
     fromEndStack = []
-    name1 = getName("Start")
-    name2 = getName("End")
+    name1 = getName("Start", tree)
+    name2 = getName("End", tree)
+    searchStart = searchThread(1, name1)
+    searchEnd = searchThread(2, name2)
+    searchStart.start()
+    searchEnd.start()
+
+def threadTest():
+    tree = [(1, "Mr Big", 0), (2, "Alan Amis", 1), (3, "Bob Bridger", 1), (6, "Charlie Chubb", 2), (12, "Dave Dell", 3), (15, "Ernie East", 3), (16, "Fred Fish", 6), (17, "George Green", 6)]
     
-
-def findManagers(searchName):    
-    for i in len(tree):
-        print(i)
-        i = i + 1
-
-
 def main():
 #The main function, called upon launch of the program.
         print("---------------------------------")
