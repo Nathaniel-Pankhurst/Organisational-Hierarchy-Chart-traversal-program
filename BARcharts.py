@@ -4,14 +4,14 @@
 #Date started: 04/03/2016
 #Date finished: 05/03/2016
 
-def getUserChoice():
+def getUserChoice(tree):
 # Function called in the main() function to give user the range of choices, pull the user's choice as an input,
 # then validate that choice.
     inputValid = False
     while not inputValid:
         userChoice = input("Please choose from one of the options Below: \n     1: Build Org Chart \n     2: Find shortest path through chain of management between 2 employees \n     Q: Quit the Program \nuserChoice: ")
         userChoice = userChoice.lower()
-        if(userChoice == "1") or (userChoice == "2") or (userChoice == "q"):
+        if(userChoice == "1") or ((userChoice == "2") and not (tree == [])) or (userChoice == "q"):
             inputValid = True
         else:
             inputValid = False
@@ -98,7 +98,7 @@ def checkFinished():
             input("*Press Enter to continue*")
     return repeat
 
-def traverseTree():
+def traverseTree(tree):
 # Function called by main() for the purpose of finding, and building the shortest path of communication between two employees.
 # For this to occur traverseTree pulls the employeeId's of the user's chosen employees through use of getEmployeeId(),
 # passes those into getEmployeeChainOfCommand() to find the chains of command for both employee,
@@ -183,12 +183,13 @@ def main():
         endMain = False
         tree = []
         while not endMain:
-            userChoice = getUserChoice()
+            userChoice = getUserChoice(tree)
+            print("\n\n")
             if (userChoice == "1"):
                 tree = []
                 getTree(tree)
             elif (userChoice == "2"):
-                traverseTree()
+                traverseTree(tree)
             elif (userChoice == "q"):
                 endMain = True
             else:
