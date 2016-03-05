@@ -28,8 +28,8 @@ Upon selecting option 2 (if the org chart has already been built), the traverseT
 After entering both employee names correctly, if a path of communication is found, the program will display it in the shell.
 
 ## Known Bugs
-The following bugs in the program are known:
-Known Bug | Function found in|Why has it happened
+####The following bugs in the program are known:
+Known Bug | Found in function | Why has it happened
 ----------|------------------|-------------------
 program accepts non-existent manager ids | getTree() | This has occurred as since the user must be able to input the employees in any order, the code can't impliment a validation check that ensures the manager already exists in the list before you can reference it. 
 
