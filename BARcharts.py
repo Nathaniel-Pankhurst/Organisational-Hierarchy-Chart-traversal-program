@@ -9,7 +9,7 @@ def getUserChoice(tree):
 # then validate that choice.
     inputValid = False
     while not inputValid:
-        userChoice = input("Please choose from one of the options Below: \n     1: Build Org Chart \n     2: Find shortest path through chain of management between 2 employees \n     3: Print Org Tree \n     Q: Quit the Program \nuserChoice: ")
+        userChoice = input("Please choose from one of the options Below: \n     1: Build Org Chart \n     2: Find shortest path through chain of management between 2 employees \n     3: Print Org Chart \n     Q: Quit the Program \nuserChoice: ")
         userChoice = userChoice.lower()
         if(userChoice == "1") or ((userChoice == "2") and not (tree == [])) or (userChoice == "3")or (userChoice == "q"):
             inputValid = True
