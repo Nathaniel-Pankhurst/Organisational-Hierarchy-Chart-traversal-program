@@ -30,6 +30,9 @@ When you've completed entering your employee information don't forget to enter n
 Upon selecting option 2 (if the org chart has already been built), the traverseTree() function is called, this results in the program asking for the names of the two employees the user wants to find the shortest path of commnication between. Upon the appearance of this prompt enter the two names one at a time and simply press enter. Though make sure you are spelling the names correctly, as if you don't the program will not find the employee.<br />
 After entering both employee names correctly, if a path of communication is found, the program will display it in the shell.
 
+## Possible Future Changes
+If I were to have a little more time, I would have altered the Print Org Chart option so that it prints out a visual representation of the chart.
+
 ## Known Bugs
 ####The following bugs in the program are known:
 Known Bug | Found in function | Why has it happened
