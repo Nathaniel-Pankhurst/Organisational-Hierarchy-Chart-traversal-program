@@ -9,9 +9,9 @@ def getUserChoice(tree):
 # then validate that choice.
     inputValid = False
     while not inputValid:
-        userChoice = input("Please choose from one of the options Below: \n     1: Build Org Chart \n     2: Find shortest path through chain of management between 2 employees \n     Q: Quit the Program \nuserChoice: ")
+        userChoice = input("Please choose from one of the options Below: \n     1: Build Org Chart \n     2: Find shortest path through chain of management between 2 employees \n     3: Print Org Tree \n     Q: Quit the Program \nuserChoice: ")
         userChoice = userChoice.lower()
-        if(userChoice == "1") or ((userChoice == "2") and not (tree == [])) or (userChoice == "q"):
+        if(userChoice == "1") or ((userChoice == "2") and not (tree == [])) or (userChoice == "3")or (userChoice == "q"):
             inputValid = True
         else:
             inputValid = False
@@ -26,6 +26,7 @@ def getTree(tree):
 # and in the case of employee number to ensure that no employee number is repeated.
     treeFinished = False
     repetitionCount = 1
+    ceoPresent = False
     while not treeFinished:
         numberValid = False
         nameValid = False
@@ -62,10 +63,17 @@ def getTree(tree):
         while not managerValid:
             try:
                 employeeManager = int(input("What is the employee number of employee " + str(repetitionCount) + "'s manager? (enter 0 if employee has no manager): "))
-                if employeeManager >= 0:     
+                if employeeManager >= 0 and not ceoPresent:     
+                    managerValid = True
+                    ceoPresent = True
+                elif employeeManager >= 1:
                     managerValid = True
                 else:
-                    print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nError: Please enter a value greater than or equal to 0 for the employee's manager number.\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
+                    errorOut = "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nError: Please enter a value greater than "
+                    if not ceoPresent:
+                        errorOut = errorOut + "or equal to "
+                    errorOut = errorOut + "0 for the employee's manager number.\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" 
+                    print(errorOut)
                     input("*Press Enter to continue")
             except ValueError:
                 print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nError: user input invalid, please try again.\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
@@ -109,8 +117,8 @@ def traverseTree(tree):
     recipientCoC = [""]
     sender = getEmployeeId("Start", tree)
     recipient = getEmployeeId("End", tree)
-    senderCoC = getEmployeeChainOfCommand(sender)
-    recipientCoC = getEmployeeChainOfCommand(recipient)
+    senderCoC = getEmployeeChainOfCommand(sender, tree)
+    recipientCoC = getEmployeeChainOfCommand(recipient, tree)
     shortestPath = findShortestPath(senderCoC, recipientCoC)
     print("\nThe shortest chain of communication between the two employees is: " + shortestPath + "\n")
     input("*Press Enter to continue*")
@@ -139,7 +147,7 @@ def getEmployeeId(nameType, tree):
     return employeeId
 
     
-def getEmployeeChainOfCommand(employeeId):
+def getEmployeeChainOfCommand(employeeId, tree):
 # Function used by traverseTree() to find the chain of command for a given employee.
     chainOfCommand = []
     toBeSearched = employeeId
@@ -190,6 +198,8 @@ def main():
                 getTree(tree)
             elif (userChoice == "2"):
                 traverseTree(tree)
+            elif (userChoice == "3"):
+                print(tree)
             elif (userChoice == "q"):
                 endMain = True
             else:
